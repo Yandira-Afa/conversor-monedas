@@ -2,63 +2,50 @@ import java.util.Scanner;
 
 public class Principal {
     public static void main(String[] args) {
-        Scanner lectura = new Scanner(System.in);
-        BuscaDivisas consulta = new BuscaDivisas();
-        int opcion=0;
-        while (opcion!=7) {
-            System.out.println("****************************************\n"+
-                    "Bienvenidos al Conversor de Divisas\n"+
-                    "****************************************\n\n"+
-                    "1) Dolar (USD)          ==> Peso Chileno (CLP):\n"+
-                    "2) Peso Chileno (CLP)   ==> Dolar (USD):\n"+
-                    "3) Dolar (USD)          ==> Peso Agentino (ARS):\n"+
-                    "4) Peso Argentino (ARS) ==> Dolar (USD) :\n"+
-                    "5) Dolar (USD)          ==> Peso Colombianoo (COP):\n"+
-                    "6) Peso Colombiano (COP)==> Dolar (USD) :\n"+
-                    "7) Dolar (USD)          ==> Real Brasilero (BRL):\n"+
-                    "8) Real Brasilero (BRL) ==> Dolar (USD) :\n"+
-                    "9) Salirr ==> :\n");
-            opcion = lectura.nextInt();
-            lectura.nextLine();
+        Scanner scanner = new Scanner(System.in);
+        ApiDivisas buscaDivisas = new ApiDivisas();
+        ConversorMonedas conversorMonedas = new ConversorMonedas();
 
-            switch (opcion) {
-                case 1:
-                    ConversionMoneda.conversor("USD", "CLP", consulta, lectura);
-                    break;
-                case 2:
-                    ConversionMoneda.conversor("CLP", "USD", consulta, lectura);
-                    break;
-                case 3:
-                    ConversionMoneda.conversor("USD", "ARS", consulta, lectura);
-                    break;
-                case 4:
-                    ConversionMoneda.conversor("ARS", "USD", consulta, lectura);
-                    break;
-                case 5:
-                    ConversionMoneda.conversor("USD", "COP", consulta, lectura);
-                    break;
-                case 6:
-                    ConversionMoneda.conversor("COP", "USD", consulta, lectura);
-                    break;
-                case 7:
-                    ConversionMoneda.conversor("USD", "BRL", consulta, lectura);
-                    break;
-                case 8:
-                    ConversionMoneda.conversor("BRL", "USD", consulta, lectura);
-                    break;
-                case 9:
-                    System.out.println("Abandonando La Conversion de Divisas");
-                    break;
+        while (true) {
+            System.out.println("****************************************\n" +
+                    "Bienvenidos al Conversor de Divisas\n" +
+                    "****************************************\n\n" +
+                    "1.- Acceso a la Operacion de Conversion :\n " +
+                    "2.- Salirr ==> :\n");
+            int opcion = scanner.nextInt();
+            if (opcion == 1) {
+                System.out.println("Monedas Disponibles para Conversion: ");
+                System.out.println("USD ==> Dolar ");
+                System.out.println("CLP ==> Peso Chileno ");
+                System.out.println("ARS ==> Peso Argentino");
+                System.out.println("COP ==> Peso Colombiano");
+                System.out.println("BRL ==> Real Brasilero ");
 
-                default:
-                    System.out.println("Opcion Invalida");
-                    break;
+                System.out.println("Ingrese opcion MONEDA BASE:");
+                String monedaBasa = scanner.next().toUpperCase();
 
+                System.out.println("Ingrese opcion MONEDA DESTINO:");
+                String monedaDestino = scanner.next().toUpperCase();
+
+                System.out.println("Ingrese El Monto a Convertir:");
+                double cantidad = scanner.nextDouble();
+
+
+                double divisaConvertida = buscaDivisas.converorMonedas(monedaBasa, monedaDestino, cantidad);
+                System.out.println("El Monto total es:  \n" + divisaConvertida" - "+ monedaDestino);
+
+
+            } else if (opcion == 2) {
+                buscaDivisas.grabaConversionesJson();
+                buscaDivisas.resumenConversiones();
+                break;
+            } else {
+                System.out.println("Opcion Invalida");
+                break;
             }
-
-
-
-
         }
+        scanner.close();
+
+
     }
 }
